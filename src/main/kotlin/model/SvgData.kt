@@ -162,14 +162,37 @@ data class SvgData(
 
     fun toImageVectorCode(): String {
         var imageVectorCode = if (isMaterialIcon) {
-            "val Icons.[IconName]: ImageVector\n" +
+            "import androidx.compose.foundation.Image\n" +
+                    "import androidx.compose.material.icons.Icons\n" +
+                    "import androidx.compose.material.icons.materialIcon\n" +
+                    "import androidx.compose.material.icons.materialPath\n" +
+                    "import androidx.compose.runtime.Composable\n" +
+                    "import androidx.compose.ui.graphics.vector.ImageVector\n" +
+                    "import androidx.compose.ui.tooling.preview.Preview\n" +
+                    "\n" +
+                    "@Suppress(\"UnusedReceiverParameter\")\n" +
+                    "val Icons.[IconName]: ImageVector\n" +
                     "    get() {\n" +
                     "        if (_[iconName] != null) {\n" +
                     "            return _[iconName]!!\n" +
                     "        }\n" +
                     "        _[iconName] = materialIcon(name = \"[IconName]\") {"
         } else {
-            "val Icons.[IconName]: ImageVector\n" +
+            "import androidx.compose.foundation.Image\n" +
+                    "import androidx.compose.material.icons.Icons\n" +
+                    "import androidx.compose.runtime.Composable\n" +
+                    "import androidx.compose.ui.graphics.Color\n" +
+                    "import androidx.compose.ui.graphics.PathFillType\n" +
+                    "import androidx.compose.ui.graphics.SolidColor\n" +
+                    "import androidx.compose.ui.graphics.StrokeCap\n" +
+                    "import androidx.compose.ui.graphics.StrokeJoin\n" +
+                    "import androidx.compose.ui.graphics.vector.ImageVector\n" +
+                    "import androidx.compose.ui.graphics.vector.path\n" +
+                    "import androidx.compose.ui.tooling.preview.Preview\n" +
+                    "import androidx.compose.ui.unit.dp\n" +
+                    "\n" +
+                    "@Suppress(\"UnusedReceiverParameter\")\n" +
+                    "val Icons.[IconName]: ImageVector\n" +
                     "    get() {\n" +
                     "        if (_[iconName] != null) {\n" +
                     "            return _[iconName]!!\n" +
