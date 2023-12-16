@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import domain.SvgPathParser
 import domain.UnknownColors
 import domain.VectorDrawableParser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import model.SvgData
 
 @ExperimentalMaterialApi
@@ -241,16 +245,21 @@ fun MainScreen() {
         if (showIconNameDialog) {
             IconNameDialog(
                 onValidateClick = {
-                    val path = imageVectorCode.replace(
-                        "[IconName]",
-                        "${it.firstOrNull()?.uppercase()}${it.substring(1)}",
-                    ).replace(
-                        "[iconName]",
-                        "${it.firstOrNull()?.lowercase()}${it.substring(1)}",
-                    )
-                    clipboardManager.setText(AnnotatedString(path))
-                    showIconNameDialog = false
+                    CoroutineScope(Dispatchers.Default).launch {
+                        val path = imageVectorCode.replace(
+                            "[IconName]",
+                            "${it.firstOrNull()?.uppercase()}${it.substring(1)}",
+                        ).replace(
+                            "[iconName]",
+                            "${it.firstOrNull()?.lowercase()}${it.substring(1)}",
+                        )
+                        clipboardManager.setText(AnnotatedString("${it.firstOrNull()?.uppercase()}${it.substring(1)}"))
+                        delay(1000)
+                        clipboardManager.setText(AnnotatedString(path))
+                        showIconNameDialog = false
+                    }
                 },
+
                 onCancelClick = { showIconNameDialog = false },
             )
         } else if (unknownColors.isNotEmpty()) {
