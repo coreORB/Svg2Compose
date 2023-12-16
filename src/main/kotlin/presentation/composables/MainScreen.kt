@@ -3,13 +3,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.TextFieldValue
@@ -309,6 +314,7 @@ private fun AskForValidColorDialog(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalMaterialApi
 @Composable
 private fun IconNameDialog(onValidateClick: (iconName: String) -> Unit, onCancelClick: () -> Unit) {
@@ -325,11 +331,21 @@ private fun IconNameDialog(onValidateClick: (iconName: String) -> Unit, onCancel
                 value = iconName.value,
                 onValueChange = { iconName.value = it },
                 label = { Text("Icon name") },
+                singleLine = true,
+                modifier = Modifier.focusRequester(focusRequester)
+                    .onKeyEvent {
+                        if (it.key == Key.Enter) {
+                            onConfirm()
+                            true
+                        } else {
+                            false
+                        }
+                    },
             )
         },
         buttons = {
             TextButton(
-                onClick = { onValidateClick(iconName.value.text) },
+                onClick = { onConfirm() },
             ) {
                 Text("Copy code")
             }
