@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.compose") version "1.0.1"
 }
 
-val v = "1.0.0"
+val v = "1.0.1"
 group = "com.blunderer"
 version = v
 
